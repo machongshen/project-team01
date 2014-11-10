@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<casConsumerDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?><casConsumerDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <implementationName>edu.cmu.lti.f14.project.consumer.RetrievalEvaluator</implementationName>
   <processingResourceMetaData>
@@ -21,7 +20,20 @@
         <mandatory>false</mandatory>
       </configurationParameter>
     </configurationParameters>
-    <configurationParameterSettings/>
+    <configurationParameterSettings>
+      <nameValuePair>
+        <name>goldFile</name>
+        <value>
+          <string>BioASQ-SampleData1B.json</string>
+        </value>
+      </nameValuePair>
+      <nameValuePair>
+        <name>outputFile</name>
+        <value>
+          <string>output.json</string>
+        </value>
+      </nameValuePair>
+    </configurationParameterSettings>
     <typeSystemDescription/>
     <typePriorities/>
     <fsIndexCollection/>
@@ -32,7 +44,7 @@
         <languagesSupported/>
       </capability>
     </capabilities>
-  <operationalProperties>
+    <operationalProperties>
       <modifiesCas>false</modifiesCas>
       <multipleDeploymentAllowed>false</multipleDeploymentAllowed>
       <outputsNewCASes>false</outputsNewCASes>
