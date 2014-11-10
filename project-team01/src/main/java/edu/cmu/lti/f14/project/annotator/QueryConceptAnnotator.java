@@ -12,6 +12,7 @@ import org.apache.uima.cas.FSIndex;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSList;
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
@@ -54,12 +55,11 @@ public class QueryConceptAnnotator extends JCasAnnotator_ImplBase  {
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     // TODO Auto-generated method stub
-    FSIndex fs = aJCas.getAnnotationIndex(ComplexQueryConcept.type);
-    Iterator iter = fs.iterator(); 
+    FSIterator<TOP> iter = aJCas.getJFSIndexRepository().getAllIndexedFS(ComplexQueryConcept.type);
     while(iter.hasNext()){
       String result = "";
       ComplexQueryConcept cqc = (ComplexQueryConcept) iter.next();
-      FSList fslist = new FSList(aJCas);
+      FSList fslist = cqc.getOperatorArgs();
       ArrayList<AtomicQueryConcept> arraylist = Utils.fromFSListToCollection(fslist, AtomicQueryConcept.class);
       
       // content in the query of each AtomicQuery

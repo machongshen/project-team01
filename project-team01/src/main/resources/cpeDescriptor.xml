@@ -3,14 +3,14 @@
     <collectionReader>
         <collectionIterator>
             <descriptor>
-                <include href="/home/happyuser/git/project-team01/project-team01/src/main/resources/reader/questionReaderDescriptor.xml"/>
+                <import location="reader/questionReaderDescriptor.xml"/>
             </descriptor>
         </collectionIterator>
     </collectionReader>
     <casProcessors casPoolSize="3" processingUnitThreadCount="1">
         <casProcessor deployment="integrated" name="aaeDescriptor">
             <descriptor>
-                <include href="/home/happyuser/git/project-team01/project-team01/src/main/resources/Descriptor/aaeDescriptor.xml"/>
+                <import location="Descriptor/aaeDescriptor.xml"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -22,7 +22,7 @@
         </casProcessor>
         <casProcessor deployment="integrated" name="casConsumerDescriptor">
             <descriptor>
-                <include href="/home/happyuser/git/project-team01/project-team01/src/main/resources/consumer/casConsumerDescriptor.xml"/>
+                <import location="consumer/casConsumerDescriptor.xml"/>
             </descriptor>
             <deploymentParameters/>
             <errorHandling>
@@ -35,13 +35,13 @@
                 <nameValuePair>
                     <name>outputFile</name>
                     <value>
-                        <string>/src/main/resources/output.json</string>
+                        <string>/output.json</string>
                     </value>
                 </nameValuePair>
                 <nameValuePair>
                     <name>goldFile</name>
                     <value>
-                        <string>/src/main/resources/BioASQ-SampleData1B.json</string>
+                        <string>/BioASQ-SampleData1B.json</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>

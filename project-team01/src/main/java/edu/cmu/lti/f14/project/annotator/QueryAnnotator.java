@@ -74,22 +74,21 @@ public class QueryAnnotator extends JCasAnnotator_ImplBase {
 
 		FSIterator<Annotation> iter = jcas.getAnnotationIndex().iterator();
 	    if (iter.isValid() && iter.hasNext()) {
-	      iter.moveToNext();
-	      Question question = (Question) iter.get();
+	      //iter.moveToNext();
+	      Question question = (Question) iter.next();
 	      
 	      AtomicQueryConcept atomicQueryConcept = new AtomicQueryConcept(jcas);
 	      // set the whole query into the text
 	      
 	      // original text
 	      String originalText = question.getText();
-	      atomicQueryConcept.setText(question.getText());
-	      
+	      atomicQueryConcept.setOriginalText(originalText);
+	     
 	      // eliminate punctuation, stopwords
 	      String textHandled = originalText.replace("?", "").replace(".", "").replace(",", "").replace("\"", "");
-	      atomicQueryConcept.setOriginalText(StanfordLemmatizer.stemText(textHandled));
+	      atomicQueryConcept.setText(StanfordLemmatizer.stemText(textHandled).trim());
 	      
 	      atomicQueryConcept.addToIndexes();
-	      
 	      
 	      // add atomic to complex
 	      ComplexQueryConcept complexQueryConcept = new ComplexQueryConcept(jcas);

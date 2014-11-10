@@ -24,13 +24,13 @@
       <nameValuePair>
         <name>goldFile</name>
         <value>
-          <string>BioASQ-SampleData1B.json</string>
+          <string>/BioASQ-SampleData1B.json</string>
         </value>
       </nameValuePair>
       <nameValuePair>
         <name>outputFile</name>
         <value>
-          <string>output.json</string>
+          <string>/output.json</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
