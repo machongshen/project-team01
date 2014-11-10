@@ -20,6 +20,18 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.tartarus.snowball.ext.PorterStemmer;
+import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
+import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.FSIterator;
+import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSList;
+import org.apache.uima.jcas.tcas.Annotation;
+
+import util.StanfordLemmatizer;
+import util.Utils;
+import edu.cmu.lti.oaqa.type.input.Question;
+import edu.cmu.lti.oaqa.type.retrieval.AtomicQueryConcept;
+import edu.cmu.lti.oaqa.type.retrieval.ComplexQueryConcept;
 
 import util.LuceneConfig;
 import edu.cmu.lti.oaqa.type.input.Question;
@@ -61,20 +73,43 @@ public class QueryAnnotator extends JCasAnnotator_ImplBase {
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 
 		FSIterator<Annotation> iter = jcas.getAnnotationIndex().iterator();
-		if (iter.isValid()) {
-			iter.moveToNext();
-			Question question = (Question) iter.get();
-			createTermFreqVector(jcas, question);
-		}
+	    if (iter.isValid() && iter.hasNext()) {
+	      iter.moveToNext();
+	      Question question = (Question) iter.get();
+	      
+	      AtomicQueryConcept atomicQueryConcept = new AtomicQueryConcept(jcas);
+	      // set the whole query into the text
+	      
+	      // original text
+	      String originalText = question.getText();
+	      atomicQueryConcept.setText(question.getText());
+	      
+	      // eliminate punctuation, stopwords
+	      String textHandled = originalText.replace("?", "").replace(".", "").replace(",", "").replace("\"", "");
+	      atomicQueryConcept.setOriginalText(StanfordLemmatizer.stemText(textHandled));
+	      
+	      atomicQueryConcept.addToIndexes();
+	      
+	      
+	      // add atomic to complex
+	      ComplexQueryConcept complexQueryConcept = new ComplexQueryConcept(jcas);
+	      
+	      // fs
+	      FSList fs = new FSList(jcas);
+	      // arraylist
+	      ArrayList<AtomicQueryConcept> tokenList = new ArrayList<AtomicQueryConcept>();
+	      tokenList.add(atomicQueryConcept);
+	      
+	      // from arraylist to fs     Change in the Utils
+	      fs = Utils.fromCollectionToFSList(jcas,tokenList);
+	      complexQueryConcept.setOperatorArgs(Utils.fromCollectionToFSList(jcas, tokenList)); 
+	      complexQueryConcept.addToIndexes();
+	      
+	    }
 
 	}
 
-	private void createTermFreqVector(JCas aJCas, Question question) {
-		// TODO Auto-generated method stub
-		FSIterator<Annotation> iter = aJCas.getAnnotationIndex(Question.type)
-				.iterator();
-
-	}
+	
 
 	public static void main(String[] args) {
 		QueryAnnotator qa = new QueryAnnotator();
