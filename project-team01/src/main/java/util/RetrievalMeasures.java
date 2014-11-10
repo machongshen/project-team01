@@ -39,6 +39,10 @@ public class RetrievalMeasures {
     return (double)positiveTrue/goldStand.size();
   }
   
+  public static double f1Measure(double precision, double recall) {
+    return 2*precision*recall/ (precision + recall);
+  }
+  
   /**
    * Calculate Average Precision
    * @param goldStand
