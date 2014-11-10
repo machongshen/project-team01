@@ -68,7 +68,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
 				  new Object[]{PARAM_OUTPUT});
 	  }
 	  //String goldPath = "src/main/resources/data/BioASQ-SampleData1B.json";
-	  String goldPath = (String) getUimaContext().getConfigParameterValue("goldFile");
+	  String goldPath = ((String) getUimaContext().getConfigParameterValue("goldFile")).trim();
 	  List<TestQuestion> goldAnswer;
 	  goldAnswer = Lists.newArrayList();
 		Object value = goldPath;
