@@ -9,6 +9,7 @@ import java.util.List;
 import json.JsonCollectionReaderHelper;
 import json.gson.Question;
 import json.gson.TestSet;
+import json.gson.TrainingSet;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -33,7 +34,7 @@ public class QuestionReader extends CollectionReader_ImplBase {
 
 	    Object value = mFilePath;
 		if (String.class.isAssignableFrom(value.getClass())) {
-			inputs = TestSet
+			inputs = TrainingSet
 					.load(getClass().getResourceAsStream(
 							String.class.cast(value))).stream()
 					.collect(toList());
