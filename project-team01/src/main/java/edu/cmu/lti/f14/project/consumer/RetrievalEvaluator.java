@@ -72,18 +72,18 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
 	  List<TestQuestion> goldAnswer;
 	  goldAnswer = Lists.newArrayList();
 		Object value = goldPath;
+    
+    /*if (goldPath != null && goldPath.length() != 0) {
+      goldAnswer = TestSet.load(getClass().getResourceAsStream(goldPath)).stream()
+              .collect(toList());*/
 		if (String.class.isAssignableFrom(value.getClass())) {
-			goldAnswer = TestSet
-					.load(getClass().getResourceAsStream(
-							String.class.cast(value))).stream()
-					.collect(toList());
+      goldAnswer = TestSet.load(getClass().
+			        getResourceAsStream(String.class.cast(value))).
+			        stream().collect(toList());
 		} else if (String[].class.isAssignableFrom(value.getClass())) {
-			goldAnswer = Arrays
-					.stream(String[].class.cast(value))
-					.flatMap(
-							path -> TestSet.load(
-									getClass().getResourceAsStream(path))
-									.stream()).collect(toList());
+			goldAnswer = Arrays.stream(String[].class.cast(value)).flatMap(
+							path -> TestSet.load(getClass().getResourceAsStream(path)).
+							stream()).collect(toList());
 		}
 		// trim question texts
 		goldAnswer.stream()
@@ -100,7 +100,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
 		 recall = new ArrayList<Double[]>();
 		 fmeasure = new ArrayList<Double[]>();
 		 retrievalRes = new ArrayList<RetrievalResult>();
-		 
+		 avgPrecision = new ArrayList<Double[]>();
   }
 
   //@Override

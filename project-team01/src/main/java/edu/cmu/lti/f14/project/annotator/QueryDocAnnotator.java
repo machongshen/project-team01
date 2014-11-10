@@ -11,8 +11,11 @@ import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.FSIndex;
+import org.apache.uima.cas.FSIterator;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSList;
+import org.apache.uima.jcas.cas.TOP;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 import util.Utils;
@@ -49,12 +52,11 @@ public class QueryDocAnnotator extends JCasAnnotator_ImplBase {
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     // TODO Auto-generated method stub
-    FSIndex fs = aJCas.getAnnotationIndex(ComplexQueryConcept.type);
-    Iterator iter = fs.iterator(); 
+    FSIterator<TOP> iter = aJCas.getJFSIndexRepository().getAllIndexedFS(ComplexQueryConcept.type);
     while(iter.hasNext()){
       String result = "";
       ComplexQueryConcept cqc = (ComplexQueryConcept) iter.next();
-      FSList fslist = new FSList(aJCas);
+      FSList fslist = cqc.getOperatorArgs();
       ArrayList<AtomicQueryConcept> arraylist = Utils.fromFSListToCollection(fslist, AtomicQueryConcept.class);
       
       // content in the query of each AtomicQuery
@@ -71,29 +73,26 @@ public class QueryDocAnnotator extends JCasAnnotator_ImplBase {
       }
       
       // return a list of documents
-      List<PubMedSearchServiceResponse.Document> docList = pubmedResult.getDocuments();
-      // rank
-      int rank = 0;
-      // iterate through the whole documents
-      for(PubMedSearchServiceResponse.Document doc : docList){
-        // docid
-        String docID = doc.getPmid();
-        // docURI
-        String uri = "http://www.ncbi.nlm.nih.gov/pubmed/" + docID;
-        // Title
-        String title = doc.getTitle();
-        // 
-        // new a document 
-        Document document = TypeFactory.createDocument(aJCas, uri, 0.0, "", rank, queryText, "", 
-                new ArrayList<CandidateAnswerVariant>(), title, docID);
-        
-        document.addToIndexes();
-        
-        
-        
-    }
-      
-      
+      if (pubmedResult != null) {
+        List<PubMedSearchServiceResponse.Document> docList = pubmedResult.getDocuments();
+        // rank
+        int rank = 0;
+        // iterate through the whole documents
+        for(PubMedSearchServiceResponse.Document doc : docList){
+          // docid
+          String docID = doc.getPmid();
+          // docURI
+          String uri = "http://www.ncbi.nlm.nih.gov/pubmed/" + docID;
+          // Title
+          String title = doc.getTitle();
+          // 
+          // new a document 
+          Document document = TypeFactory.createDocument(aJCas, uri, 0.0, "", rank, queryText, "", 
+                  new ArrayList<CandidateAnswerVariant>(), title, docID);
+          
+          document.addToIndexes();
+        }
+      }  
     }
   }
 }
