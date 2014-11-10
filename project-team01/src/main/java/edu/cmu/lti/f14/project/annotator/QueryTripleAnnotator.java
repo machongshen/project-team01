@@ -84,12 +84,16 @@ public class QueryTripleAnnotator extends JCasAnnotator_ImplBase {
             String obj = relation.getObj();
             
             Triple triple = TypeFactory.createTriple(aJCas, sub, pred, obj);
+            
             triple.addToIndexes();
             // triple's super type
             TripleSearchResult tripleSearchResult = new TripleSearchResult(aJCas);
             tripleSearchResult.setTriple(triple);
             tripleSearchResult.setRank(rank);
+            tripleSearchResult.setQueryString(queryText);
             tripleSearchResult.addToIndexes();
+            
+            
             
           }
         }
