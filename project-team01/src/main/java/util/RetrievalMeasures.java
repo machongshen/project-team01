@@ -12,6 +12,8 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double precision(List<T> goldStand,List<T> ret ) {
+    if (ret.size() == 0)
+      return 0.0;
     HashSet<T> gold = new HashSet<T>(goldStand);
     int positiveTrue = 0;
     for (T retrieved : ret) {
