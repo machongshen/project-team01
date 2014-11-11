@@ -12,7 +12,7 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double precision(List<T> goldStand,List<T> ret ) {
-    if (ret.size() == 0)
+    if (ret.size() == 0 ||goldStand.size() == 0)
       return 0.0;
     HashSet<T> gold = new HashSet<T>(goldStand);
     int positiveTrue = 0;
@@ -31,7 +31,7 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double recall(List<T> goldStand,List<T> ret ) {
-    if (ret.size() == 0)
+    if (ret.size() == 0 ||goldStand.size() == 0)
       return 0.0;
     HashSet<T> gold = new HashSet<T>(goldStand);
     int positiveTrue = 0;
@@ -56,6 +56,8 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double avgPreision(List<T> goldStand,List<T> ret){
+    if (goldStand.size() == 0) 
+      return 0.0;
     ArrayList<Double> p = new ArrayList<>();
     HashSet<T> gold = new HashSet<T>(goldStand);
     int relevantCount = 0; // number of relevant items
