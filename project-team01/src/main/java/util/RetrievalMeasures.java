@@ -29,6 +29,8 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double recall(List<T> goldStand,List<T> ret ) {
+    if (ret.size() == 0)
+      return 0.0;
     HashSet<T> gold = new HashSet<T>(goldStand);
     int positiveTrue = 0;
     for (T retrieved : ret) {
@@ -40,6 +42,8 @@ public class RetrievalMeasures {
   }
   
   public static double f1Measure(double precision, double recall) {
+    if (precision == 0 || recall == 0)
+      return 0.0;
     return 2*precision*recall/ (precision + recall);
   }
   
@@ -78,6 +82,8 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double MAP(double[] ap) {
+    if (ap.length == 0)
+      return 0.0;
     double sum = 0;
     for (int i = 0; i < ap.length; i++) {
       sum += ap[i];
@@ -91,6 +97,8 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> double GMAP(double[] ap) {
+    if (ap.length == 0)
+      return 0.0;
     double product = 1.0;
     for (int i = 0; i < ap.length; i++) {
       product *= Math.pow(ap[i], 1.0 / ap.length);
