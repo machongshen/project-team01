@@ -83,14 +83,16 @@ public class RetrievalMeasures {
    * @param ap
    * @return
    */
-  public static<T> double MAP(double[] ap) {
-    if (ap.length == 0)
-      return 0.0;
-    double sum = 0;
-    for (int i = 0; i < ap.length; i++) {
-      sum += ap[i];
-    }
-    return sum/ap.length;
+  public static<T> Double[] MAP(List<Double[]> avgPrecision) {
+	  Double map[] = new Double[3];
+	  Double length = new Double(avgPrecision.size());
+	  for (Double[] ap : avgPrecision){
+	    	for (int i = 0; i < ap.length; i++){
+	    		map[i] += ap[i] / length;
+	    		//gmap[i] *= (ap[i] + epslon);
+	    	}
+	    }
+    return map;
   }
   
   /**
@@ -98,13 +100,17 @@ public class RetrievalMeasures {
    * @param ap
    * @return
    */
-  public static<T> double GMAP(double[] ap) {
-    if (ap.length == 0)
-      return 0.0;
-    double product = 1.0;
-    for (int i = 0; i < ap.length; i++) {
-      product *= Math.pow(ap[i], 1.0 / ap.length);
-    }
-    return product;
+  public static<T> Double[] GMAP(List<Double[]> avgPrecision) {
+	  Double gmap[] = {1.0,1.0,1.0};
+	  Double epslon = 1e-3;
+	  Double length = new Double(avgPrecision.size());
+	  for (Double[] ap : avgPrecision){
+	    	for (int i = 0; i < ap.length; i++)
+	    		gmap[i] *= (ap[i] + epslon);
+	  }
+	  for (int i = 0; i < gmap.length; i++){
+	    	gmap[i] = Math.pow(gmap[i], 1./length);
+	    }
+	  return gmap;
   }
 }
