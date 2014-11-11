@@ -80,7 +80,7 @@ public class QuestionReader extends CollectionReader_ImplBase {
 	@Override
 	public Progress[] getProgress() {
 		// TODO Auto-generated method stub
-		System.out.println("getProgress()....");
+		System.out.println("getProgress()...." + mCurrentIndex);
 		return new Progress[] { new ProgressImpl(mCurrentIndex, inputs.size(), Progress.ENTITIES) };
 	}
 

@@ -19,7 +19,7 @@
       <nameValuePair>
         <name>INFILE</name>
         <value>
-          <string>/questions.json</string>
+          <string>/questions1.json</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

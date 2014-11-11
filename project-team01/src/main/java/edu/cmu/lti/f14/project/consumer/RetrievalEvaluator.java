@@ -139,7 +139,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
       Document doc  = (Document) docIter.next(); 
       docMap.put(doc.getRank(),doc.getUri());
     }  
-    System.out.println(docMap.values().size());
+ //   System.out.println(docMap.values().size());
     FSIterator<TOP> triIter = jcas.getJFSIndexRepository().getAllIndexedFS(TripleSearchResult.type);
     Map<Integer,Triple> triMap = new TreeMap<Integer,Triple>();  
     while(triIter.hasNext()){
@@ -169,7 +169,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     			goldTriples.add(new Triple(tri.getO(), tri.getP(), tri.getS()));
     		}
     	}
-    } test.add((ArrayList<String>) goldDocs);
+    } //test.add((ArrayList<String>) goldDocs);
    // System.out.println("******" + myDocs.size());
    // RetrievalMeasures evaluator = new RetrievalMeasures();
     Double[] precisions =new Double[3];
@@ -219,27 +219,18 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
     super.collectionProcessComplete(arg0);
-    for (ArrayList<String> t : test)
-    System.out.println("!!!!!!!" + t.get(0));
-   // List<Double[]> map = new ArrayList<Double[]>();
-   // List<Double[]> gmap = new ArrayList<Double[]>();
+  //  for (ArrayList<String> t : test)
+   // System.out.println("!!!!!!!" + t.get(0));
+    int length = avgPrecision.size();
     Double map[] = new Double[3];
     Double gmap[] = new Double[3];
-    Double length = new Double(avgPrecision.size());
-    Double epslon = 1e-2;
-    for (Double[] ap : avgPrecision){
-    	for (int i = 0; i < ap.length; i++){
-    		map[i] += ap[i] / length;
-    		gmap[i] *= (ap[i] + epslon);
-    	}
-    }
-    for (int i = 0; i < gmap.length; i++){
-    	gmap[i] = Math.pow(gmap[i], 1./length);
-    }
     
-   
+    map = RetrievalMeasures.MAP(avgPrecision);
+
+    gmap = RetrievalMeasures.GMAP( avgPrecision);
+       
     System.out.println("*************************");
-    for (int i = 0; i < length.intValue(); i++){
+    for (int i = 0; i < length; i++){
     	System.out.println("\nQuery" + i + ":\n");
     	 Double output[] = new Double[3];
     	System.out.print("\n  precision:");
@@ -256,7 +247,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     		System.out.print(output[j] +  "\t");
     }
     System.out.println("*************************");
-    System.out.println(length.intValue() + "Queries:\n");
+    System.out.println(length + "Queries:\n");
     System.out.print("\nMAP:");
     for (int j = 0; j < map.length; j++)
 		System.out.print(map[j] +  "\t");
