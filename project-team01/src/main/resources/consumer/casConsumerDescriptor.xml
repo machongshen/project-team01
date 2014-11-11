@@ -30,7 +30,7 @@
       <nameValuePair>
         <name>outputFile</name>
         <value>
-          <string>/output.json</string>
+          <string>output.json</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

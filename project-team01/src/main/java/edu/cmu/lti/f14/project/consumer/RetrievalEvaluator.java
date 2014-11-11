@@ -152,7 +152,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     List<String> myConcepts = new ArrayList<String>(conceptMap.values());
     List<String> myDocs = new ArrayList<String>(docMap.values());
     List<Triple> myTriples = new ArrayList<Triple>(triMap.values());
-    retrievalRes.add(new RetrievalResult(question.getId(), question.getText(), myDocs, myConcepts, myTriples));
+    retrievalRes.add(new RetrievalResult(question.getId(), question.getText(), myConcepts, myDocs, myTriples));
     List<String> goldDocs = new ArrayList<String>();
     List<String> goldConcepts = new ArrayList<String>();
     List<Triple> goldTriples = new ArrayList<Triple>();
@@ -186,7 +186,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     recall.add(recalls);
     fscores[0] = RetrievalMeasures.f1Measure(precisions[0], recalls[0]);
     fscores[1] = RetrievalMeasures.f1Measure(precisions[1], recalls[1]);
-    fscores[1] = RetrievalMeasures.f1Measure(precisions[2], recalls[2]);
+    fscores[2] = RetrievalMeasures.f1Measure(precisions[2], recalls[2]);
     fmeasure.add(fscores);
     avgP[0] = RetrievalMeasures.avgPreision(goldDocs, myDocs);
     avgP[1] = RetrievalMeasures.avgPreision(goldConcepts, myConcepts);
@@ -221,6 +221,13 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     super.collectionProcessComplete(arg0);
   //  for (ArrayList<String> t : test)
    // System.out.println("!!!!!!!" + t.get(0));
+    Gson gson = new Gson(); 
+   // String jsonOutput = gson.toJson(retrievedAnswers);
+    File resultFile = new File(outputPath);
+    BufferedWriter fWriter = new BufferedWriter(new FileWriter(resultFile));
+    fWriter.write(gson.toJson(retrievalRes));
+    fWriter.close();
+    
     int length = avgPrecision.size();
     Double map[] = new Double[3];
     Double gmap[] = new Double[3];
@@ -254,9 +261,5 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     System.out.print("\nGMAP:");
     for (int j = 0; j < gmap.length; j++)
 		System.out.print(gmap[j] +  "\t");
-    Gson gson = new Gson(); 
-   // String jsonOutput = gson.toJson(retrievedAnswers);
-    BufferedWriter fWriter = new BufferedWriter(new FileWriter(outputPath));
-    fWriter.write(gson.toJson(retrievalRes));
   }
 }
