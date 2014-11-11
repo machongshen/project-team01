@@ -96,14 +96,9 @@ public class QueryConceptAnnotator extends JCasAnnotator_ImplBase  {
         conceptSearchResult.setQueryString(queryText);
         conceptSearchResult.addToIndexes();
         
-        rank++;
-        
-      }            
-         
-      
-      
+        rank++;   
+      }           
     }
-    
     
   }
   

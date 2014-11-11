@@ -60,6 +60,8 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   List<Double[]> fmeasure;
   List<Double[]> avgPrecision;
   List<RetrievalResult> retrievalRes;
+  int count = 0;
+  ArrayList<ArrayList<String>> test = new ArrayList<ArrayList<String>> ();
   //List<Double[]> avgPrecision;
   public void initialize() throws ResourceInitializationException {
 	  outputPath = (String) getUimaContext().getConfigParameterValue(PARAM_OUTPUT);
@@ -71,7 +73,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
 	  String goldPath = ((String) getUimaContext().getConfigParameterValue("goldFile")).trim();
 	  List<TestQuestion> goldAnswer;
 	  goldAnswer = Lists.newArrayList();
-		Object value = goldPath;
+	  Object value = goldPath;
     
     /*if (goldPath != null && goldPath.length() != 0) {
       goldAnswer = TestSet.load(getClass().getResourceAsStream(goldPath)).stream()
@@ -129,14 +131,15 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
       ConceptSearchResult cpt = (ConceptSearchResult) conceptIter.next(); 
       conceptMap.put(cpt.getRank(),cpt.getUri());
     }
-    
+  
     FSIterator<TOP> docIter = jcas.getJFSIndexRepository().getAllIndexedFS(Document.type);
     Map<Integer,String> docMap = new TreeMap<Integer,String>();  
     while(docIter.hasNext()){
+    	//count++;
       Document doc  = (Document) docIter.next(); 
       docMap.put(doc.getRank(),doc.getUri());
-    }
-    
+    }  
+    System.out.println(docMap.values().size());
     FSIterator<TOP> triIter = jcas.getJFSIndexRepository().getAllIndexedFS(TripleSearchResult.type);
     Map<Integer,Triple> triMap = new TreeMap<Integer,Triple>();  
     while(triIter.hasNext()){
@@ -145,26 +148,29 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
       edu.cmu.lti.oaqa.type.kb.Triple temp = trp.getTriple();
       triMap.put(trp.getRank(),new Triple(temp.getSubject(), temp.getPredicate(), temp.getObject())); 
     }
-
-    List<String> goldDocs = new ArrayList<String>(docMap.values());
-    List<String> goldConcepts = new ArrayList<String>(conceptMap.values());
-    List<Triple> goldTriples = new ArrayList<Triple>(triMap.values());
-    retrievalRes.add(new RetrievalResult(question.getId(), question.getText(), goldDocs, goldConcepts, goldTriples));
-    List<String> myConcepts = new ArrayList<String>();
-    List<String> myDocs = new ArrayList<String>();
-    List<Triple> myTriples = new ArrayList<Triple>();
+    System.out.println("dasdad:" + docMap.size());
+    List<String> myConcepts = new ArrayList<String>(conceptMap.values());
+    List<String> myDocs = new ArrayList<String>(docMap.values());
+    List<Triple> myTriples = new ArrayList<Triple>(triMap.values());
+    retrievalRes.add(new RetrievalResult(question.getId(), question.getText(), myDocs, myConcepts, myTriples));
+    List<String> goldDocs = new ArrayList<String>();
+    List<String> goldConcepts = new ArrayList<String>();
+    List<Triple> goldTriples = new ArrayList<Triple>();
     
+   
     String queryId = question.getId();
+  //  System.out.println(goldSet.containsKey(queryId));
     if (goldSet.containsKey(queryId)){
-    	myConcepts =  goldSet.get(queryId).getConcepts();
-    	myDocs = goldSet.get(queryId).getDocuments();
+    	goldConcepts =  goldSet.get(queryId).getConcepts();
+    	goldDocs = goldSet.get(queryId).getDocuments();
     	List<Triple> tempTriples = goldSet.get(queryId).getTriples();
     	if (tempTriples != null){
     		for (Triple tri : tempTriples){
-    			myTriples.add(new Triple(tri.getO(), tri.getP(), tri.getS()));
+    			goldTriples.add(new Triple(tri.getO(), tri.getP(), tri.getS()));
     		}
     	}
-    }
+    } test.add((ArrayList<String>) goldDocs);
+   // System.out.println("******" + myDocs.size());
    // RetrievalMeasures evaluator = new RetrievalMeasures();
     Double[] precisions =new Double[3];
     Double[] recalls =new Double[3];
@@ -186,19 +192,35 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     avgP[1] = RetrievalMeasures.avgPreision(goldConcepts, myConcepts);
     avgP[2] = RetrievalMeasures.avgPreision(goldTriples, myTriples);
     avgPrecision.add(avgP);
+    for (int i = 0; i < 3; i++){
+    	System.out.println(precisions[i] + " ");
+    }
+   
+    if (goldDocs.size() == 0){
+    	System.out.println("failure");
+    }
+    for (String words : goldDocs){
+    	System.out.println(words);
+    }
+    System.out.println("*****");
   }
 
   @Override
   public void destroy() {
+	 
+	    
   }
 
   /**
    * TODO 1. Compute Cosine Similarity and rank the retrieved sentences 2. Compute the MRR metric
    */
+  @SuppressWarnings("resource")
   @Override
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
           IOException {
     super.collectionProcessComplete(arg0);
+    for (ArrayList<String> t : test)
+    System.out.println("!!!!!!!" + t.get(0));
    // List<Double[]> map = new ArrayList<Double[]>();
    // List<Double[]> gmap = new ArrayList<Double[]>();
     Double map[] = new Double[3];

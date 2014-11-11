@@ -78,6 +78,9 @@ public class QueryTripleAnnotator extends JCasAnnotator_ImplBase {
         // System.out.println("LinkedLifeData: " + linkedLifeDataResult.getEntities().size());
         // rank
         int rank = 0;
+        if (linkedLifeDataResult.getEntities() == null){
+        	continue;
+        }
         for (LinkedLifeDataServiceResponse.Entity entity : linkedLifeDataResult.getEntities()) {
           for (LinkedLifeDataServiceResponse.Relation relation : entity.getRelations()) {
             String pred = relation.getPred();
@@ -93,8 +96,6 @@ public class QueryTripleAnnotator extends JCasAnnotator_ImplBase {
             tripleSearchResult.setRank(rank);
             tripleSearchResult.setQueryString(queryText);
             tripleSearchResult.addToIndexes();
-            
-            
             
           }
         }
