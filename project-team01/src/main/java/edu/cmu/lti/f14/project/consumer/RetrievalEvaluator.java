@@ -1,3 +1,8 @@
+/**
+ * 
+ * @author KangHuang, Chouchen Li 2014/11/11
+ * 
+ */
 package edu.cmu.lti.f14.project.consumer;
 
 import java.io.BufferedReader;
@@ -46,6 +51,8 @@ import edu.cmu.lti.oaqa.type.retrieval.Document;
 import edu.cmu.lti.oaqa.type.retrieval.TripleSearchResult;
 import static java.util.stream.Collectors.toList;
 
+
+
 public class RetrievalEvaluator extends CasConsumer_ImplBase {
 
   /**
@@ -62,7 +69,10 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   List<RetrievalResult> retrievalRes;
   int count = 0;
   ArrayList<ArrayList<String>> test = new ArrayList<ArrayList<String>> ();
-  //List<Double[]> avgPrecision;
+
+  /**
+   * Read goldAnswer into hashmap and initialize ArrayList storing metrics  
+   */
   public void initialize() throws ResourceInitializationException {
 	  outputPath = (String) getUimaContext().getConfigParameterValue(PARAM_OUTPUT);
 	  if (outputPath == null){
@@ -105,6 +115,13 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
 		 avgPrecision = new ArrayList<Double[]>();
   }
 
+  
+  /**
+   * Fetch three items: concept, document and triples from correspond annotation.
+   * Also find gold answer with same queryId, 
+   * Then use static methods in util.RetrievalMeasures.java to calculate metrics
+   * then store them into ArrayList respectively. 
+   */
   //@Override
   public void processCas(CAS aCas) throws ResourceProcessException {
 
@@ -191,18 +208,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     avgP[0] = RetrievalMeasures.avgPreision(goldDocs, myDocs);
     avgP[1] = RetrievalMeasures.avgPreision(goldConcepts, myConcepts);
     avgP[2] = RetrievalMeasures.avgPreision(goldTriples, myTriples);
-    avgPrecision.add(avgP);
-    for (int i = 0; i < 3; i++){
-    	System.out.println(precisions[i] + " ");
-    }
-   
-    if (goldDocs.size() == 0){
-    	System.out.println("failure");
-    }
-    for (String words : goldDocs){
-    	System.out.println(words);
-    }
-    System.out.println("*****");
+    avgPrecision.add(avgP); 
   }
 
   @Override
@@ -212,7 +218,9 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   }
 
   /**
-   * TODO 1. Compute Cosine Similarity and rank the retrieved sentences 2. Compute the MRR metric
+   *  When whole pipeline completes, calculate unordered metrics: precisions, recalls and 
+   *  F1-score and ordered metrics: MAP,GMAP. Output metrics result to console and write retrieval 
+   *  result into Json format files.
    */
   @SuppressWarnings("resource")
   @Override
@@ -238,9 +246,9 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
        
     System.out.println("*************************");
     for (int i = 0; i < length; i++){
-    	System.out.println("\nQuery" + i + ":\n");
+    	System.out.println("\n\nQuery" + i + ":");
     	 Double output[] = new Double[3];
-    	System.out.print("\n  precision:");
+    	System.out.print("  precision:");
     	output = precision.get(i);
     	for (int j = 0; j < output.length; j++)
     		System.out.print(output[j] +  "\t");
@@ -253,13 +261,14 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     	for (int j = 0; j < output.length; j++)
     		System.out.print(output[j] +  "\t");
     }
-    System.out.println("*************************");
-    System.out.println(length + "Queries:\n");
+    System.out.println("\n*************************");
+    System.out.println("There are " + length + " Queries:\n");
     System.out.print("\nMAP:");
     for (int j = 0; j < map.length; j++)
 		System.out.print(map[j] +  "\t");
     System.out.print("\nGMAP:");
     for (int j = 0; j < gmap.length; j++)
 		System.out.print(gmap[j] +  "\t");
+    System.out.println();
   }
 }
