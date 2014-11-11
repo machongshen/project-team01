@@ -86,7 +86,7 @@ public class RetrievalMeasures {
    * @return
    */
   public static<T> Double[] MAP(List<Double[]> avgPrecision) {
-	  Double map[] = new Double[3];
+	  Double map[] = {0.0,0.0,0.0};
 	  Double length = new Double(avgPrecision.size());
 	  for (Double[] ap : avgPrecision){
 	    	for (int i = 0; i < ap.length; i++){
