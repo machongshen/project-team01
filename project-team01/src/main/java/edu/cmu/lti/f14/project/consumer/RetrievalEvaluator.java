@@ -165,7 +165,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
       edu.cmu.lti.oaqa.type.kb.Triple temp = trp.getTriple();
       triMap.put(trp.getRank(),new Triple(temp.getSubject(), temp.getPredicate(), temp.getObject())); 
     }
-    System.out.println("dasdad:" + docMap.size());
+   // System.out.println("dasdad:" + docMap.size());
     List<String> myConcepts = new ArrayList<String>(conceptMap.values());
     List<String> myDocs = new ArrayList<String>(docMap.values());
     List<Triple> myTriples = new ArrayList<Triple>(triMap.values());
