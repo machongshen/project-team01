@@ -15,6 +15,9 @@
     <delegateAnalysisEngine key="nlpQueryDescriptor">
       <import name="Descriptor.nlpQueryDescriptor"/>
     </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="snippedDescriptor">
+      <import name="Descriptor.snippedDescriptor"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>aaeDescriptor</name>
@@ -29,6 +32,7 @@
         <node>documentDescriptor</node>
         <node>conceptDescriptor</node>
         <node>tripleDescriptor</node>
+      <node>snippedDescriptor</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
