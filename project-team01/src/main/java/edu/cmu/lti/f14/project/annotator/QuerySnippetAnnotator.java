@@ -148,7 +148,7 @@ public class QuerySnippetAnnotator extends JCasAnnotator_ImplBase {
         int start = stopArticle.indexOf(sentence[maxId]);
         int end = sentence[maxId].length() + 1;
         
-        Passage passage = TypeFactory.createPassage(aJCas, url, doc.getScore(), sentence[maxId], doc.getRank(), query, "", new ArrayList<CandidateAnswerVariant>(), doc.getTitle(), doc.getDocId(), start, end, "", "", "");
+        Passage passage = TypeFactory.createPassage(aJCas, url, doc.getScore(), sentence[maxId], doc.getRank(), query, "", new ArrayList<CandidateAnswerVariant>(), doc.getTitle(), doc.getDocId(), start, end, "sections.0", "sections.0", "");
         
         passage.addToIndexes();
         
