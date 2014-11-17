@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?>
+<collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
   <implementationName>edu.cmu.lti.f14.project.reader.QuestionReader</implementationName>
   <processingResourceMetaData>
@@ -18,7 +19,7 @@
       <nameValuePair>
         <name>INFILE</name>
         <value>
-          <string>/q.json</string>
+          <string>/questions.json</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

@@ -54,7 +54,6 @@ public class QueryDocAnnotator extends JCasAnnotator_ImplBase {
     // TODO Auto-generated method stub
     FSIterator<TOP> iter = aJCas.getJFSIndexRepository().getAllIndexedFS(ComplexQueryConcept.type);
     while(iter.hasNext()){
-      String result = "";
       ComplexQueryConcept cqc = (ComplexQueryConcept) iter.next();
       FSList fslist = cqc.getOperatorArgs();
       ArrayList<AtomicQueryConcept> arraylist = Utils.fromFSListToCollection(fslist, AtomicQueryConcept.class);
@@ -85,10 +84,13 @@ public class QueryDocAnnotator extends JCasAnnotator_ImplBase {
           String uri = "http://www.ncbi.nlm.nih.gov/pubmed/" + docID;
           // Title
           String title = doc.getTitle();
+          
           // 
           // new a document 
           Document document = TypeFactory.createDocument(aJCas, uri, 0.0, "", rank, queryText, "", 
                   new ArrayList<CandidateAnswerVariant>(), title, docID);
+          
+          
           
           document.addToIndexes();
         }
